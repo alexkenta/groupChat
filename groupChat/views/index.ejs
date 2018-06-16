@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Group Chat</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script
+        src="http://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+        <script src="/socket.io/socket.io.js" type="text/javascript"></script>
+
+        <script>
+        $(document).ready(function(){
+            var socket = io.connect();
+
+            let user
+            //let guest choose a name, and EMIT that name to server
+            let new_user = function(){
+            let name = prompt("Choose a username", "guest");
+            socket.emit("load_page", {name:name})
+            }
+
+            new_user();
+            //listen for server EMIT of all previous messages and append them to chat window
+            socket.on("get_all_messages", function(data){
+                user = data.name
+                // socket.emit("new_user_logged_on", {name: user})
+                for(let message of data.messages){
+                console.log("by:", message.name, "message",message.message)
+                $("#chatWindow").append(`<p>${message.name}:  ${message.message}</p>`)
+                }
+            })
+            //**left this part out for now. Need functionality for when user logs off.**
+            // socket.on("new_user_announcement", function(data){
+            //     $("#chatWindow").append(`<p style="color: green;">${data.name} has entered the chat<p>`)
+            // })
+
+            //listen for form submit/message post, emit the new message to server
+            $('form').submit(function(){
+                socket.emit("new_message", {
+                    message: $('#chat_message').val(),
+                    name: user
+                })       
+                return false
+            })
+            //listen for new message post from any user and append to chat window
+            socket.on("post_new_message", function(data){
+                $("#chatWindow").append(`<p>${data.name}:  ${data.message}</p`);                    
+        });       
+    });
+        </script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <h4>Conversation Board:</h4>
+            <div id="chatWindow" style="height: 500px; border: solid 1px black" >
+            </div>
+            <br>
+            <form action="">
+                <input type="text" name="chatMessage" onfocus="this.value=''" id="chat_message" style="width: 680px;">
+                <input type="submit" value="send">
+            </form>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+</div>
+    
+    
+</body>
+</html>
