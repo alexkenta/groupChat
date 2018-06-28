@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Group Chat</title>
+    <link href="https://fonts.googleapis.com/css?family=Shrikhand" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script
         src="http://code.jquery.com/jquery-3.3.1.min.js"
@@ -33,7 +34,7 @@
                 $("#chatWindow").append(`<p>${message.name}:  ${message.message}</p>`)
                 }
             })
-            //**left this part out for now. Need functionality for when user logs off.**
+            
             // socket.on("new_user_announcement", function(data){
             //     $("#chatWindow").append(`<p style="color: green;">${data.name} has entered the chat<p>`)
             // })
@@ -53,18 +54,18 @@
     });
         </script>
 </head>
-<body>
+<body style="background-color: rgba(119, 102, 102, 0.788);">
 <div class="container">
     <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-8">
-            <h4>Conversation Board:</h4>
-            <div id="chatWindow" style="height: 500px; border: solid 1px black" >
+            <h4 style="font-family: 'Shrikhand', cursive; font-size: 200%; color: rgba(193, 245, 7, 0.966)">Group Chat!</h4>
+            <div id="chatWindow" style="padding: 5px; background-color: rgba(226, 248, 237, 0.938); width: 350px; height: 400px; border: solid 6px darkslategray" >
             </div>
             <br>
             <form action="">
-                <input type="text" name="chatMessage" onfocus="this.value=''" id="chat_message" style="width: 680px;">
-                <input type="submit" value="send">
+                <input type="text" name="chatMessage" onfocus="this.value=''" id="chat_message" style="width: 300px;">
+                <input type="submit" value="post it!" class="btn-primary">
             </form>
         </div>
         <div class="col-md-2"></div>

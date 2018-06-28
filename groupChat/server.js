@@ -25,11 +25,7 @@ const io = require('socket.io').listen(server);
 io.sockets.on('connection', function(socket){
     console.log('Client/socket is connected!');
     console.log('Client/socket id is: ' + socket.id)
-//when a new user logs on, emit an announcement to everyone. Disabled for now.
-    // socket.on("new_user_logged_on", function(data){
-    //     io.emit("new_user_announcement", {name: data.name})
-    //     console.log(data.name)
-    //})
+
  //listen for new message, broadcast the message and user to everyone, push into all_messages list
     socket.on("new_message", function(data){
         io.emit("post_new_message", {name: data.name, message: data.message})
